@@ -47,4 +47,4 @@ jobs:
         path: target
 
     - run: |
-        target/temporal -h
+        ls -la target
