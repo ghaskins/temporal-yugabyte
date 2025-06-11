@@ -27,7 +27,10 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: compiled-binaries
-        path: target
+        path: |
+          target
+          integration/core/target
+          integration/clojure/target
 
   test:
     runs-on: ubuntu-latest
