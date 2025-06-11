@@ -50,4 +50,6 @@ jobs:
         chmod +x target/*
         cp target/* /usr/local/bin
 
-        docker-compose -f docker/docker-compose/integrate.yml up -d
+        temporal -h
+
+        docker-compose -f docker/docker-compose/integrate.yml up -d --wait --quiet-pull
