@@ -5,7 +5,6 @@ set -eux
 export YUGABYTE_SEEDS=localhost
 export YUGABYTE_KEYSPACE=temporal
 
-export ES_SEEDS=localhost
 export ES_SERVER="http://localhost:9200"
 export ES_VERSION=v7
 export ES_VIS_INDEX=temporal_visibility_v1_dev
