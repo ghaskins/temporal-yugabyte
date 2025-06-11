@@ -48,8 +48,4 @@ jobs:
 
     - run: |
         chmod +x target/*
-        cp target/* /usr/local/bin
-
-        docker-compose -f docker/docker-compose/integrate.yml up --quiet-pull -d --wait
-
-        docker-compose -f docker/docker-compose/integrate.yml down
+        ./integrate.sh
