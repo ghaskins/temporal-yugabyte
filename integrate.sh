@@ -57,28 +57,13 @@ wait_for_temporal() {
     echo "Temporal server started."
 }
 
-start_thirdparty () {
-    #docker-compose -f $INTEGRATION_COMPOSE up --quiet-pull -d --wait
+init_services() {
     init_yb
     init_es
-}
-
-stop_thirdparty() {
-    #docker-compose -f $INTEGRATION_COMPOSE down
-}
-
-start_services() {
-    start_thirdparty
     start_temporal
 }
 
-stop_services() {
-    TEMPORAL_PID=$1
-    kill -9 $TEMPORAL_PID
-    stop_thirdparty
-}
-
-start_services
+init_services
 
 export TEMPORAL_PID=$!
 echo "Temporal started on PID: $TEMPORAL_PID"
@@ -86,4 +71,4 @@ wait_for_temporal
 
 integration/core/target/core-integration-test -test.v
 
-stop_services $TEMPORAL_PID
+kill -9 $TEMPORAL_PID
