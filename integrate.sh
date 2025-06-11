@@ -9,9 +9,8 @@ export ES_SERVER="http://localhost:9200"
 export ES_VERSION=v7
 export ES_VIS_INDEX=temporal_visibility_v1_dev
 
-start_thirdparty () {
-    docker-compose -f docker/docker-compose/integrate.yml up --quiet-pull -d --wait
-}
+export BINDIR=./target/
+
 
 # === Yugabyte functions ===
 
@@ -23,7 +22,7 @@ wait_for_yb() {
     echo 'Yugabyte started.'
 }
 
-setup_yb() {
+init_yb() {
     wait_for_yb
 
     SCHEMA_DIR=./schema/yugabyte/temporal/versioned
@@ -44,7 +43,7 @@ wait_for_es() {
     echo 'Elasticsearch started.'
 }
 
-setup_es() {
+init_es() {
 
     wait_for_es
 
@@ -59,12 +58,29 @@ setup_es() {
 
 }
 
+start_temporal() {
+    $BINDIR/temporal-server --env development --allow-no-auth start &
+}
+
+wait_for_temporal() {
+    until $BINDIR/temporal operator cluster health | grep -q SERVING; do
+        echo "Waiting for Temporal server to start..."
+        sleep 1
+    done
+    echo "Temporal server started."
+}
+
+start_thirdparty () {
+    docker-compose -f docker/docker-compose/integrate.yml up --quiet-pull -d --wait
+    init_yb
+    init_es
+}
+
 stop_thirdparty() {
     docker-compose -f docker/docker-compose/integrate.yml down
 }
 
 start_thirdparty
-setup_yb
-setup_es
-target/temporal-server --env development --allow-no-auth start
+start_temporal
+wait_for_temporal
 stop_thirdparty
