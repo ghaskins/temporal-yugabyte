@@ -23,13 +23,14 @@ jobs:
     - name: Compile
       run: make all
 
-    - name: Upload binaries artifact
+    - name: Bundle assets
+      run: tar -cvf assets.tar target/ integration/core/target/ integration/clojure/target
+
+    - name: Upload assets
       uses: actions/upload-artifact@v4
       with:
-        name: compiled-binaries
-        path: |
-          target
-          integration/core/target
+        name: compiled-assets
+        path: assets.tar
 
   test:
     runs-on: ubuntu-latest
@@ -42,15 +43,14 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Download binaries artifact
+    - name: Download assets
       uses: actions/download-artifact@v4
       with:
-        name: compiled-binaries
-        path: target
-        merge-multiple: true
+        name: compiled-assets
+        path: assets.tar
+
+    - name: Unbundle assets
+      run: tar -xvf assets.tar
 
     - name: Run integration tests
-      run: |
-        ls -la target integration/core/target
-        chmod +x target/*
-        ./integrate.sh
+      run: ./integrate.sh
