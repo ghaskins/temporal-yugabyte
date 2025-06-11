@@ -45,3 +45,6 @@ jobs:
       with:
         name: compiled-binaries
         path: target
+
+    - run: |
+        target/temporal -h
