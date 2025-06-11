@@ -11,19 +11,12 @@ export ES_VIS_INDEX=temporal_visibility_v1_dev
 
 export BINDIR=./target/
 
-
-# === Yugabyte functions ===
-
-wait_for_yb() {
+init_yb() {
     until temporal-cassandra-tool --ep "${YUGABYTE_SEEDS}" validate-health; do
         echo 'Waiting for Yugabyte to start up.'
         sleep 1
     done
     echo 'Yugabyte started.'
-}
-
-init_yb() {
-    wait_for_yb
 
     SCHEMA_DIR=./schema/yugabyte/temporal/versioned
     temporal-cassandra-tool --ep "${YUGABYTE_SEEDS}" create -k "${YUGABYTE_KEYSPACE}" --rf "1"
@@ -31,21 +24,13 @@ init_yb() {
     temporal-cassandra-tool --ep "${YUGABYTE_SEEDS}" -k "${YUGABYTE_KEYSPACE}" update-schema -d "${SCHEMA_DIR}"
 }
 
-# === Elasticsearch functions ===
-
-wait_for_es() {
-
+init_es() {
     until curl --silent --fail "${ES_SERVER}" >& /dev/null; do
         echo 'Waiting for Elasticsearch to start up.'
         sleep 1
     done
 
-    echo 'Elasticsearch started.'
-}
-
-init_es() {
-
-    wait_for_es
+    echo 'Elasticsearch started.'wait_for_es
 
     SETTINGS_URL="${ES_SERVER}/_cluster/settings"
     SETTINGS_FILE=./schema/elasticsearch/visibility/cluster_settings_${ES_VERSION}.json
@@ -96,5 +81,7 @@ start_services
 export TEMPORAL_PID=$!
 echo "Temporal started on PID: $TEMPORAL_PID"
 wait_for_temporal
+
+$BINDIR/core-integration-test -test.v
 
 stop_services $TEMPORAL_PID
