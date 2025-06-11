@@ -47,4 +47,7 @@ jobs:
         path: target
 
     - run: |
-        ls -la target
+        chmod +x target/*
+        cp target/* /usr/local/bin
+
+        docker-compose -f docker/docker-compose/integrate.yml up -d

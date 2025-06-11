@@ -1,4 +1,3 @@
-
 services:
   yugabyte:
     image: yugabytedb/yugabyte:latest
@@ -36,23 +35,6 @@ services:
       - ES_JAVA_OPTS=-Xms100m -Xmx100m
     networks:
       - temporal-network
-  temporal:
-    container_name: temporal
-    depends_on:
-      - yugabyte
-      - elasticsearch
-    environment:
-      - BIND_ON_IP=0.0.0.0
-      - YUGABYTE_SEEDS=yugabyte
-      - ENABLE_ES=true
-      - ES_SEEDS=elasticsearch
-      - ES_VERSION=v7
-    image: ${TEMPORAL_SERVER_IMAGE}
-    command: autosetup
-    networks:
-      - temporal-network
-    ports:
-      - "7233:7233"
 
 networks:
   temporal-network:
