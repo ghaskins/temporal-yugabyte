@@ -58,8 +58,8 @@ wait_for_temporal() {
 }
 
 init_services() {
-    init_yb
     init_es
+    init_yb
     start_temporal
 }
 
