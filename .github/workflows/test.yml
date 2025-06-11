@@ -41,7 +41,6 @@ jobs:
     services:
       yugabyte:
         image: yugabytedb/yugabyte:latest
-        options: --entrypoint /bin/bash -c "bin/yugabyted start --daemon=false"
       elasticsearch:
         image: elasticsearch:7.10.1
         env:
