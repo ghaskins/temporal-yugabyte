@@ -80,7 +80,20 @@ stop_thirdparty() {
     docker-compose -f docker/docker-compose/integrate.yml down
 }
 
-start_thirdparty
-start_temporal
+start_services() {
+    start_thirdparty
+    start_temporal
+}
+
+stop_services() {
+    TEMPORAL_PID=$1
+    kill -i $TEMPORAL_PID
+    stop_thirdparty
+}
+
+start_services
+
+TEMPORL_PID=$!
 wait_for_temporal
-stop_thirdparty
+
+stop_services $TEMPORAL_PID
