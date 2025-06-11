@@ -58,13 +58,13 @@ wait_for_temporal() {
 }
 
 start_thirdparty () {
-    docker-compose -f $INTEGRATION_COMPOSE up --quiet-pull -d --wait
+    #docker-compose -f $INTEGRATION_COMPOSE up --quiet-pull -d --wait
     init_yb
     init_es
 }
 
 stop_thirdparty() {
-    docker-compose -f $INTEGRATION_COMPOSE down
+    #docker-compose -f $INTEGRATION_COMPOSE down
 }
 
 start_services() {
