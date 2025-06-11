@@ -9,8 +9,6 @@ services:
       - "9042:9042"
       - "12000:12000"
     command: bin/yugabyted start --daemon=false
-    networks:
-      - temporal-network
   elasticsearch:
     image: elasticsearch:7.10.1
     container_name: temporal-elasticsearch
@@ -31,10 +29,3 @@ services:
       - cluster.routing.allocation.disk.watermark.flood_stage=128mb
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms100m -Xmx100m
-    networks:
-      - temporal-network
-
-networks:
-  temporal-network:
-    driver: bridge
-    name: temporal-network
