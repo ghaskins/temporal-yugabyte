@@ -87,13 +87,14 @@ start_services() {
 
 stop_services() {
     TEMPORAL_PID=$1
-    kill -i $TEMPORAL_PID
+    kill -9 $TEMPORAL_PID
     stop_thirdparty
 }
 
 start_services
 
-TEMPORL_PID=$!
+export TEMPORAL_PID=$!
+echo "Temporal started on PID: $TEMPORAL_PID"
 wait_for_temporal
 
 stop_services $TEMPORAL_PID
