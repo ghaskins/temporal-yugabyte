@@ -66,5 +66,5 @@ stop_thirdparty() {
 start_thirdparty
 setup_yb
 setup_es
-#target/temporal-server
+target/temporal-server --env development --allow-no-auth start
 stop_thirdparty
