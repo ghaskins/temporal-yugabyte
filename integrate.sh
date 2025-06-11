@@ -9,7 +9,9 @@ export ES_SERVER="http://localhost:9200"
 export ES_VERSION=v7
 export ES_VIS_INDEX=temporal_visibility_v1_dev
 
-export BINDIR=./target/
+export INTEGRATION_COMPOSE=docker/docker-compose/integrate.yml
+
+export BINDIR=./target
 
 init_yb() {
     until temporal-cassandra-tool --ep "${YUGABYTE_SEEDS}" validate-health; do
@@ -56,13 +58,13 @@ wait_for_temporal() {
 }
 
 start_thirdparty () {
-    docker-compose -f docker/docker-compose/integrate.yml up --quiet-pull -d --wait
+    docker-compose -f $INTEGRATION_COMPOSE up --quiet-pull -d --wait
     init_yb
     init_es
 }
 
 stop_thirdparty() {
-    docker-compose -f docker/docker-compose/integrate.yml down
+    docker-compose -f $INTEGRATION_COMPOSE down
 }
 
 start_services() {
@@ -82,6 +84,6 @@ export TEMPORAL_PID=$!
 echo "Temporal started on PID: $TEMPORAL_PID"
 wait_for_temporal
 
-$BINDIR/core-integration-test -test.v
+integration/core/target/core-integration-test -test.v
 
 stop_services $TEMPORAL_PID
