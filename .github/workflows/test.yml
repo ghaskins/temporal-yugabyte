@@ -41,18 +41,10 @@ jobs:
     services:
       yugabyte:
         image: yugabytedb/yugabyte:latest
-        ports:
-          - "7000:7000"
-          - "9000:9000"
-          - "5433:5433"
-          - "9042:9042"
-          - "12000:12000"
         command: bin/yugabyted start --daemon=false
       elasticsearch:
         image: elasticsearch:7.10.1
-        ports:
-          - "9200:9200"
-        environment:
+        env:
           # Make ES available both on _local_ and _site_,
           # and use _local_ for the publish_host.
           #
