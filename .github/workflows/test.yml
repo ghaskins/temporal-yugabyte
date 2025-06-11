@@ -24,7 +24,7 @@ jobs:
       run: make all
 
     - name: Bundle assets
-      run: tar -cvf assets.tar target/ integration/core/target/ integration/clojure/target
+      run: tar -cvf assets.tar target/ integration/core/target/ integration/clojure/target/uberjar/clojure-integration-test.jar
 
     - name: Upload assets
       uses: actions/upload-artifact@v4
@@ -47,10 +47,10 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: compiled-assets
-        path: assets.tar
+        path: assets
 
     - name: Unbundle assets
-      run: tar -xvf assets.tar
+      run: tar -xvf assets/assets.tar
 
     - name: Run integration tests
       run: ./integrate.sh
