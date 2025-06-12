@@ -5,7 +5,7 @@ set -eux
 export CASSANDRA_SEEDS=yugabyte
 export PRIMARY_KEYSPACE=temporal
 
-exoirt ES_SEEDS=elasticsearch
+export ES_SEEDS=elasticsearch
 export ES_SERVER="http://$ES_SEEDS:9200"
 export ES_VERSION=v7
 export ES_VIS_INDEX=temporal_visibility_v1_dev
