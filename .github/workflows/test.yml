@@ -8,12 +8,11 @@ on:
 
 env:
     GOFLAGS: "-buildvcs=false"
-    BUILDER_IMAGE: manetu/unified-builder:v3.0
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    container: ${{ env.BUILDER_IMAGE }}
+    container: manetu/unified-builder:v3.0
     permissions:
       contents: read
 
@@ -30,4 +29,4 @@ jobs:
         compose-file: "./docker/docker-compose/integrate.yml"
 
     - name: Run integration tests
-      run: docker run --network integration-test -v $PWD:/work -w /work ${{ env.BUILDER_IMAGE }}-jre ./integrate.sh
+      run: docker run --network integration-test -v $PWD:/work -w /work manetu/unified-builder:v3.0-jre ./integrate.sh
