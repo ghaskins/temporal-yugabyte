@@ -70,5 +70,6 @@ echo "Temporal started on PID: $TEMPORAL_PID"
 wait_for_temporal
 
 integration/core/target/core-integration-test -test.v
+java -jar integration/clojure/target/uberjar/clojure-integration-test.jar
 
 kill -9 $TEMPORAL_PID

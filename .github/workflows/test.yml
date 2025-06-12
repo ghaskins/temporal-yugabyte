@@ -59,4 +59,4 @@ jobs:
         up-flags: "--quiet-pull --wait"
 
     - name: Run integration tests
-      run: docker run -i --network integration-test -v ${{ github.workspace }}:/work -w /work manetu/unified-builder:v3.0-jre ./integrate.sh
+      run: docker run -i --network integration-test -v ${{ github.workspace }}:/work -w /work manetu/unified-builder:v3.0-jre ./integration/run.sh
