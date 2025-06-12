@@ -13,7 +13,7 @@ COPY integration /src/integration
 COPY schema /src/schema
 COPY utils /src/utils
 
-RUN cd /src && make clean all
+RUN cd /src && make clean bin
 
 ENV GOPATH=/go
 
