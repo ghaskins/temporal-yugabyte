@@ -58,4 +58,4 @@ jobs:
         compose-file: "./docker/docker-compose/integrate.yml"
 
     - name: Run integration tests
-      run: docker run --network integration-test -v $PWD:/work -w /work manetu/unified-builder:v3.0-jre ./integrate.sh
+      run: docker run -i --network integration-test -v ${{ github.workspace }}:/work -w /work manetu/unified-builder:v3.0-jre ./integrate.sh
