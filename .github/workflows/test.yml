@@ -56,7 +56,6 @@ jobs:
       uses: hoverkraft-tech/compose-action@v2.0.1
       with:
         compose-file: "./docker/docker-compose/integrate.yml"
-        compose-flags: "--quiet-pull --wait"
 
     - name: Run integration tests
       run: docker run -i --network integration-test -v ${{ github.workspace }}:/work -w /work manetu/unified-builder:v3.0-jre ./integrate.sh

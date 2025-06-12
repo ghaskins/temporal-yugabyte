@@ -45,7 +45,7 @@ init_es() {
 }
 
 start_temporal() {
-    $BINDIR/temporal-server --env development --allow-no-auth start &
+    $BINDIR/temporal-server --env integration --allow-no-auth start &
 }
 
 wait_for_temporal() {
