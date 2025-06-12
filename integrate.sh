@@ -2,10 +2,11 @@
 
 set -eux
 
-export YUGABYTE_SEEDS=yugabyte
-export YUGABYTE_KEYSPACE=temporal
+export CASSANDRA_SEEDS=yugabyte
+export PRIMARY_KEYSPACE=temporal
 
-export ES_SERVER="http://elasticsearch:9200"
+exoirt ES_SEEDS=elasticsearch
+export ES_SERVER="http://$ES_SEEDS:9200"
 export ES_VERSION=v7
 export ES_VIS_INDEX=temporal_visibility_v1_dev
 
@@ -14,16 +15,16 @@ export INTEGRATION_COMPOSE=docker/docker-compose/integrate.yml
 export BINDIR=./target
 
 init_yb() {
-    until $BINDIR/temporal-cassandra-tool --ep "${YUGABYTE_SEEDS}" validate-health; do
+    until $BINDIR/temporal-cassandra-tool --ep "${CASSANDRA_SEEDS}" validate-health; do
         echo 'Waiting for Yugabyte to start up.'
         sleep 1
     done
     echo 'Yugabyte started.'
 
     SCHEMA_DIR=./schema/yugabyte/temporal/versioned
-    $BINDIR/temporal-cassandra-tool --ep "${YUGABYTE_SEEDS}" create -k "${YUGABYTE_KEYSPACE}" --rf "1"
-    $BINDIR/temporal-cassandra-tool --ep "${YUGABYTE_SEEDS}" -k "${YUGABYTE_KEYSPACE}" setup-schema -v 0.0
-    $BINDIR/temporal-cassandra-tool --ep "${YUGABYTE_SEEDS}" -k "${YUGABYTE_KEYSPACE}" update-schema -d "${SCHEMA_DIR}"
+    $BINDIR/temporal-cassandra-tool --ep "${CASSANDRA_SEEDS}" create -k "${PRIMARY_KEYSPACE}" --rf "1"
+    $BINDIR/temporal-cassandra-tool --ep "${CASSANDRA_SEEDS}" -k "${PRIMARY_KEYSPACE}" setup-schema -v 0.0
+    $BINDIR/temporal-cassandra-tool --ep "${CASSANDRA_SEEDS}" -k "${PRIMARY_KEYSPACE}" update-schema -d "${SCHEMA_DIR}"
 }
 
 init_es() {
