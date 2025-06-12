@@ -43,6 +43,7 @@ jobs:
         image: yugabytedb/yugabyte:latest
         ports:
           - "9042:9042"
+        options:
       elasticsearch:
         image: elasticsearch:7.10.1
         ports:

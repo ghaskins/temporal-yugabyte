@@ -31,8 +31,7 @@ init_es() {
         echo 'Waiting for Elasticsearch to start up.'
         sleep 1
     done
-
-    echo 'Elasticsearch started.'wait_for_es
+    echo 'Elasticsearch started.'
 
     SETTINGS_URL="${ES_SERVER}/_cluster/settings"
     SETTINGS_FILE=./schema/elasticsearch/visibility/cluster_settings_${ES_VERSION}.json
@@ -58,8 +57,8 @@ wait_for_temporal() {
 }
 
 init_services() {
-    init_es
     init_yb
+    init_es
     start_temporal
 }
 
