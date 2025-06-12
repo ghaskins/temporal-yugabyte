@@ -10,7 +10,7 @@ services:
       - "12000:12000"
     command: bin/yugabyted start --daemon=false
     networks:
-      - temporal-network
+      - integration-test
   elasticsearch:
     image: elasticsearch:7.10.1
     container_name: temporal-elasticsearch
@@ -32,9 +32,9 @@ services:
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms100m -Xmx100m
     networks:
-      - temporal-network
+      - integration-test
 
 networks:
-  temporal-network:
+  integration-test:
     driver: bridge
-    name: temporal-network
+    name: integration-test

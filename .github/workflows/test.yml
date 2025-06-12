@@ -38,31 +38,6 @@ jobs:
     container: ghcr.io/manetu/ci-tools:3.1
     permissions:
       contents: read
-    services:
-      yugabyte:
-        image: yugabytedb/yugabyte:latest
-        ports:
-          - "9042:9042"
-        options:
-      elasticsearch:
-        image: elasticsearch:7.10.1
-        ports:
-          - "9200:9200"
-        env:
-          # Make ES available both on _local_ and _site_,
-          # and use _local_ for the publish_host.
-          #
-          # See here for details on network configuration:
-          # https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-network.html
-          network.host: _local_,_site_
-          network.publish_host: _local_
-          # Set storage limit to low number.
-          cluster.routing.allocation.disk.threshold_enabled: true
-          cluster.routing.allocation.disk.watermark.low: 512mb
-          cluster.routing.allocation.disk.watermark.high: 256mb
-          cluster.routing.allocation.disk.watermark.flood_stage: 128mb
-          discovery.type: single-node
-          ES_JAVA_OPTS: -Xms100m -Xmx100m
 
     steps:
     - name: Checkout repository
@@ -77,5 +52,10 @@ jobs:
     - name: Unbundle assets
       run: tar -xvf assets/assets.tar
 
+    - name: Run third-party services
+      uses: hoverkraft-tech/compose-action@v2.0.1
+      with:
+        compose-file: "./docker/docker-compose/integrate.yml"
+
     - name: Run integration tests
-      run: ./integrate.sh
+      run: docker run -it --rm --network integration-test -v $PWD:/work -w /work manetu/unified-builder:v3.0-jre ./integrate.sh
