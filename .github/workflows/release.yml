@@ -6,8 +6,6 @@ on:
     branches: [ master, develop ]
     types:
       - completed
-  push:
-    tags: [ 'v*' ]
 
 env:
   REGISTRY: ghcr.io
@@ -16,6 +14,7 @@ env:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     container: ghcr.io/manetu/ci-tools:3.1
     permissions:
       contents: read
